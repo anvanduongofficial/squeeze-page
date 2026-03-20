@@ -1,26 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700;1,900&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
+
+/* ── Design tokens ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg:         #0d0a1a;
+  --surface:    #160f2e;
+  --surface-2:  #1e1540;
+  --purple:     #7c3aed;
+  --purple-lt:  #a855f7;
+  --purple-dim: rgba(124, 58, 237, 0.15);
+  --gold:       #e9b96e;
+  --text:       #f0eafb;
+  --text-muted: #9d8fbf;
+  --border:     rgba(124, 58, 237, 0.2);
+  --border-lt:  rgba(255, 255, 255, 0.07);
+  --green:      #4ade80;
+  --green-dim:  rgba(74, 222, 128, 0.1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ── Base ── */
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Manrope', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ── Noise texture overlay ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px;
+}
+
+/* ── Font families ── */
+.font-fraunces { font-family: 'Fraunces', serif; }
+.font-mono-dm  { font-family: 'DM Mono', monospace; }
+.font-manrope  { font-family: 'Manrope', sans-serif; }
+
+/* ── Animations ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50%       { transform: translateY(-12px) rotate(1deg); }
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.8); }
+}
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(30px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.3); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.animate-float      { animation: float 5s ease-in-out infinite; }
+.animate-pulse-dot  { animation: pulse-dot 2s infinite; }
+.animate-card-in    { animation: card-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.animate-pop-in     { animation: pop-in 0.5s 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+.animate-reveal-1 { animation: reveal-up 0.65s 0.05s ease forwards; opacity: 0; }
+.animate-reveal-2 { animation: reveal-up 0.65s 0.15s ease forwards; opacity: 0; }
+.animate-reveal-3 { animation: reveal-up 0.65s 0.28s ease forwards; opacity: 0; }
+.animate-reveal-4 { animation: reveal-up 0.65s 0.42s ease forwards; opacity: 0; }
+
+/* ── Gradient line (top border glow) ── */
+.border-glow-purple::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.4), transparent);
+}
+.border-glow-green::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(74, 222, 128, 0.4), transparent);
+}
+
+/* ── Cheat sheet card shine ── */
+.cs-shine::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.5), transparent);
+}
+
+/* ── Input focus ring ── */
+.input-purple:focus {
+  outline: none;
+  border-color: var(--purple-lt);
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
 }
